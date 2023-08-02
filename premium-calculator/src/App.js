@@ -134,6 +134,7 @@
 
 
 import React, { useState } from 'react';
+import axios from "axios"
 
 function App() {
   const [plan, setPlan] = useState("select");
@@ -144,6 +145,7 @@ function App() {
   const [members, setMembers] = useState("select");
   const [adultAges, setAdultAges] = useState([]);
   const [childAges, setChildAges] = useState([]);
+  const [tenure,setTenure]=useState("select")
   const [premium, setPremium] = useState(null);
 
   const handleCalculate = (e) => {
@@ -165,25 +167,27 @@ function App() {
     const childAgesArray = childAges.map((child) => parseInt(child.age));
 console.log({
   plan: plan,
-  tier: tier,
+  tier: parseInt(tier.split("-")[1]),
   sumInsured: parseInt(sumInsured),
   adultAges: adultAgesArray,
   childAges: childAgesArray,
+  tenure:parseInt(tenure)
 })
     // Send user input to the backend to calculate premium
-    // axios.post('http://localhost:5000/calculate_premium', {
-    //   plan: plan,
-    //   tier: tier,
-    //   sumInsured: parseInt(sumInsured),
-    //   adultAges: adultAgesArray,
-    //   childAges: childAgesArray,
-    // })
-    //   .then(response => {
-    //     setPremium(response.data.premium);
-    //   })
-    //   .catch(error => {
-    //     console.error('Error calculating premium:', error);
-    //   });
+    axios.post('http://127.0.0.1:5000/calculate_premium', {
+      plan: plan,
+      tier: parseInt(tier.split("-")[1]),
+      sumInsured: parseInt(sumInsured),
+      adultAges: adultAgesArray,
+      childAges: childAgesArray,
+      tenure:parseInt(tenure)
+    })
+      .then(response => {
+        setPremium(response.data.premium);
+      })
+      .catch(error => {
+        console.error('Error calculating premium:', error);
+      });
   };
 
   const handleAdultAgeChange = (index, age) => {
@@ -239,9 +243,18 @@ console.log({
           Sum Insured
           <select value={sumInsured} onChange={(e) => setSumInsured(e.target.value)}>
             <option value="select">Select</option>
-            <option value="10000">10,000</option>
-            <option value="20000">20,000</option>
-            <option value="30000">30,000</option>
+            <option value="100000">1,00,000</option>
+            <option value="200000">2,00,000</option>
+            <option value="300000">3,00,000</option>
+          </select>
+        </label>
+        <label>
+          Tenure
+          <select value={tenure} onChange={(e) => setTenure(e.target.value)}>
+            <option value="select">Select</option>
+            <option value="1">1</option>
+            <option value="2">2</option>
+            <option value="3">3</option>
           </select>
         </label>
         <label>
