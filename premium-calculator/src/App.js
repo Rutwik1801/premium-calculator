@@ -30,7 +30,12 @@ function App() {
 
     // Prepare child ages
     const childAgesArray = childAges.map((child) => parseInt(child.age));
-
+const config = {
+  headers: {
+    'Content-Type': 'application/json',
+    'Origin': 'https://premium-calculator.vercel.app', // Set the origin to your domain
+  },
+};
     // Send user input to the backend to calculate premium
     axios.post('https://flask-production-21cd.up.railway.app/calculate_premium', {
       plan: plan,
@@ -39,7 +44,7 @@ function App() {
       adultAges: adultAgesArray,
       childAges: childAgesArray,
       tenure:parseInt(tenure)
-    })
+    },config)
       .then(response => {
         // GET BACK THE PREMIUM
         setPremium(response.data.premium);
