@@ -1,138 +1,3 @@
-// import logo from './logo.svg';
-// import './App.css';
-// import { useState } from 'react';
-
-// function App() {
-//   const [plan,setPlan]=useState("select");
-//   const [tier,setTier]=useState("select");
-//   const [sumInsured,setSumInsured]=useState("select");
-//   const [adults,setAdults]=useState("select")
-//   const [children,setChildren]=useState("select")
-//   const [members,setMembers]=useState("select");
-//  const [adultAges,setAdultAges]=useState([]);
-//  const [childAges,setChildAges]=useState([]);
-//   const handleClick=(e)=>{
-//     e.preventDefault()
-//   const resObject={
-//     plan:plan,
-//     tier:tier,
-//     sumInsured:sumInsured,
-//     members:members
-//   }
-//   console.log(resObject)
-//   }
-//   return (
-//     <div className="App" style={{display:"flex",justifyContent:"center",alignItems:"center",flexDirection:"column"}}>
-//       <form onSubmit={handleClick} style={{display:"flex",justifyContent:"center",alignItems:"center",flexDirection:"column",gap:"20px"}}>
-//       <label>
-//         Plan
-//       <select value={plan} onChange={(e)=>setPlan(e.target.value)}>
-//         <option>select</option>
-//       <option >SilverSmart</option>
-//      </select>
-//       </label>
-//       <label>
-//         Sum Insured
-//       <select value={sumInsured} onChange={(e)=>setSumInsured(e.target.value)}>
-//       <option>select</option>
-//       <option >10000</option>
-//       <option >20000</option>
-//       <option >30000</option>
-//      </select>
-//       </label>
-//       <label>
-//         City Tier
-//       <select value={tier} onChange={(e)=>setTier(e.target.value)}>
-//         <option>select</option>
-//       <option >Tier-1</option>
-//       <option >Tier-2</option>
-//      </select>
-//       </label>
-//       {/* <label>
-//         Number of members
-//       <select value={members} onChange={(e)=>setMembers(e.target.value)}>
-//       <option>select</option>
-//         <option>1 adult</option>
-//       <option>2 adults</option>
-//       <option >1 adult + 1 child</option>
-//       <option >1 adult+ 2 children</option>
-//       <option>1 adult+ 3 children</option>
-//       <option >1 adult+ 4 children</option>
-//       <option >2 adults+ 1 child</option>
-//       <option>2 adults+ 2 children</option>
-//       <option >2 adults+ 3 children</option>
-//       <option >2 adults+ 4 children</option>
-//      </select>
-//       </label> */}
-
-// <label>
-//         Number Of Adults
-//       <select value={adults} onChange={(e)=>{
-//         setAdults(e.target.value)
-//         console.log(e.target.value)
-//         let newAges=[]
-//         for(let i=0;i<e.target.value;i++){
-//           newAges.push({idx:i,age:25});
-//         }
-//         setAdultAges(newAges)
-//         console.log(adultAges)
-//         }}>
-//         <option>select</option>
-//       <option >1</option>
-//       <option >2</option>
-//      </select>
-//       </label>
-//       <label>
-//         Number Of Children
-//       <select value={children} onChange={(e)=>{
-//         setChildren(e.target.value)
-//         console.log(e.target.value)
-//         let newAges=[]
-//         for(let i=0;i<e.target.value;i++){
-//           newAges.push({idx:i,age:25});
-//         }
-//         setChildAges(newAges)
-//         console.log(childAges)
-//         }}>
-//         <option>select</option>
-//         <option >0</option>
-//         <option >1</option>
-//         <option >2</option>
-//         <option >3</option>
-//         <option >4</option>
-//      </select>
-//       </label>
-//    { adultAges && adultAges.map((adult)=>{
-//      return(
-//       <label>
-//         Adult {adult.idx+1} age:
-// <input type='text' key={adult.idx} value={adult.age}  />
-//       </label>
-//      );
-     
-//    })}
-
-// { adultAges && childAges && childAges.map((child)=>{
-//      return(
-//       <label>
-//         Child {child.idx+1} age:
-// <input type='text' key={child.idx} value={child.age}  />
-//       </label>
-//      );
-     
-//    })}
-
-//       <button type='submit' >Submit</button>
-//       </form>
-//     </div>
-//   );
-// }
-
-// export default App;
-
-
-
-
 import React, { useState } from 'react';
 import axios from "axios"
 
@@ -142,13 +7,13 @@ function App() {
   const [sumInsured, setSumInsured] = useState("select");
   const [adults, setAdults] = useState("select");
   const [children, setChildren] = useState("select");
-  const [members, setMembers] = useState("select");
   const [adultAges, setAdultAges] = useState([]);
   const [childAges, setChildAges] = useState([]);
   const [tenure,setTenure]=useState("select")
   const [premium, setPremium] = useState(null);
 
   const handleCalculate = (e) => {
+    // SEND DATA TO BACKEND
     e.preventDefault();
     if (
       plan === "select" ||
@@ -165,14 +30,7 @@ function App() {
 
     // Prepare child ages
     const childAgesArray = childAges.map((child) => parseInt(child.age));
-console.log({
-  plan: plan,
-  tier: parseInt(tier.split("-")[1]),
-  sumInsured: parseInt(sumInsured),
-  adultAges: adultAgesArray,
-  childAges: childAgesArray,
-  tenure:parseInt(tenure)
-})
+
     // Send user input to the backend to calculate premium
     axios.post('http://127.0.0.1:5000/calculate_premium', {
       plan: plan,
@@ -183,6 +41,7 @@ console.log({
       tenure:parseInt(tenure)
     })
       .then(response => {
+        // GET BACK THE PREMIUM
         setPremium(response.data.premium);
       })
       .catch(error => {
@@ -243,9 +102,9 @@ console.log({
           Sum Insured
           <select value={sumInsured} onChange={(e) => setSumInsured(e.target.value)}>
             <option value="select">Select</option>
-            <option value="100000">1,00,000</option>
-            <option value="200000">2,00,000</option>
             <option value="300000">3,00,000</option>
+            <option value="400000">4,00,000</option>
+            <option value="500000">5,00,000</option>
           </select>
         </label>
         <label>
