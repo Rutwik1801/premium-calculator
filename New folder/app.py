@@ -8,7 +8,7 @@ CORS(app)
 # MongoDB setup
 
 # ENTER YOUR MONGODB ATLAS URL HERE
-client = MongoClient('')   
+client = MongoClient('mongodb+srv://rutwik18012001:Ruts1234@cluster0.yfilzuq.mongodb.net/')   
 db = client.PremiumDB
 premiums_collection = db['premiums']
 
