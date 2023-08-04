@@ -32,7 +32,7 @@ function App() {
     const childAgesArray = childAges.map((child) => parseInt(child.age));
 
     // Send user input to the backend to calculate premium
-    axios.post('https://premium-calculator-sstf.vercel.app/calculate_premium', {
+    axios.post('https://flask-production-21cd.up.railway.app/calculate_premium', {
       plan: plan,
       tier: parseInt(tier.split("-")[1]),
       sumInsured: parseInt(sumInsured),
